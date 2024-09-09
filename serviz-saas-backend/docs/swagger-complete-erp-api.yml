@@ -1,0 +1,937 @@
+openapi: 3.0.0
+info:
+  title: ERP System API
+  version: 1.0.0
+  description: API for managing automotive service shop operations
+
+paths:
+  /customers:
+    get:
+      summary: List all customers
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: filter
+          schema:
+            type: string
+        - in: query
+          name: include
+          schema:
+            type: string
+          description: Comma-separated list of related resources to include (e.g., 'cars')
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Customer"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+    post:
+      summary: Create a new customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
+  /customers/{customerId}:
+    get:
+      summary: Get a specific customer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    put:
+      summary: Update a customer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerInput"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    delete:
+      summary: Delete a customer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Successful response
+
+  /cars:
+    get:
+      summary: List all cars
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: filter
+          schema:
+            type: string
+        - in: query
+          name: include
+          schema:
+            type: string
+          description: Comma-separated list of related resources to include (e.g., 'customers')
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Car"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+    post:
+      summary: Create a new car
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Car"
+
+  /cars/{carId}:
+    get:
+      summary: Get a specific car
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Car"
+    put:
+      summary: Update a car
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarInput"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Car"
+    delete:
+      summary: Delete a car
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Successful response
+
+  /cars/{carId}/statistics:
+    get:
+      summary: Get car statistics
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarStatistics"
+
+  /orders:
+    get:
+      summary: List all orders
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: filter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Order"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+    post:
+      summary: Create a new order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/{orderId}:
+    get:
+      summary: Get a specific order
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    put:
+      summary: Update an order
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    delete:
+      summary: Delete an order
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Successful response
+
+  /orders/{orderId}/status:
+    patch:
+      summary: Update order status
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /jobs:
+    get:
+      summary: List all jobs
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: filter
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Job"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+    post:
+      summary: Create a new job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+
+  /jobs/{jobId}:
+    get:
+      summary: Get a specific job
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+    put:
+      summary: Update a job
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobInput"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+    delete:
+      summary: Delete a job
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Successful response
+
+  /jobs/{jobId}/status:
+    patch:
+      summary: Update job status
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [scheduled, in progress, completed]
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Job"
+
+  /appointments:
+    get:
+      summary: List all appointments
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: filter
+          schema:
+            type: string
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Appointment"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+    post:
+      summary: Create a new appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+
+  /appointments/{appointmentId}:
+    get:
+      summary: Get a specific appointment
+      parameters:
+        - in: path
+          name: appointmentId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+    put:
+      summary: Update an appointment
+      parameters:
+        - in: path
+          name: appointmentId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentInput"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+    delete:
+      summary: Delete an appointment
+      parameters:
+        - in: path
+          name: appointmentId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Successful response
+
+  /appointments/range:
+    get:
+      summary: Get appointments by date range
+      parameters:
+        - in: query
+          name: startDate
+          required: true
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Appointment"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+
+  /appointments/today:
+    get:
+      summary: Get today's appointments
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Appointment"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+
+  /appointments/waitlist:
+    get:
+      summary: Get appointment waitlist
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/WaitlistAppointment"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+    post:
+      summary: Add to appointment waitlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitlistAppointmentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitlistAppointment"
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        facebook:
+          type: string
+        notes:
+          type: string
+        cars:
+          type: array
+          items:
+            $ref: "#/components/schemas/Car"
+
+    CustomerInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        facebook:
+          type: string
+        notes:
+          type: string
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        supplier:
+          type: string
+        orderNumber:
+          type: string
+        value:
+          type: number
+          format: float
+        expectedDelivery:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [placed, shipped, completed]
+
+    OrderInput:
+      type: object
+      required:
+        - supplier
+        - orderNumber
+        - value
+      properties:
+        supplier:
+          type: string
+        orderNumber:
+          type: string
+        value:
+          type: number
+          format: float
+        expectedDelivery:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [placed, shipped, completed]
+
+    Car:
+      type: object
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        registrationPlate:
+          type: string
+        vinNumber:
+          type: string
+        yearOfProduction:
+          type: integer
+        power:
+          type: string
+        fuel:
+          type: string
+        cubicCapacity:
+          type: number
+        ownerId:
+          type: integer
+        owner:
+          type: object
+          properties:
+            $ref: "#/components/schemas/Customer"
+
+    CarInput:
+      type: object
+      required:
+        - make
+        - model
+        - registrationPlate
+        - ownerId
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        registrationPlate:
+          type: string
+        vinNumber:
+          type: string
+        yearOfProduction:
+          type: integer
+        power:
+          type: string
+        fuel:
+          type: string
+        ownerId:
+          type: integer
+
+    CarStatistics:
+      type: object
+      properties:
+        totalVisits:
+          type: integer
+        moneyEarned:
+          type: number
+          format: float
+
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        carId:
+          type: integer
+        date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [scheduled, in progress, completed]
+        completionDate:
+          type: string
+          format: date
+        completionTime:
+          type: string
+          format: time
+        moneyEarned:
+          type: number
+          format: float
+
+    JobInput:
+      type: object
+      required:
+        - customerId
+        - carId
+        - date
+        - status
+      properties:
+        customerId:
+          type: integer
+        carId:
+          type: integer
+        date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [scheduled, in progress, completed]
+        completionDate:
+          type: string
+          format: date
+        completionTime:
+          type: string
+          format: time
+        moneyEarned:
+          type: number
+          format: float
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        carId:
+          type: integer
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          format: time
+        notes:
+          type: string
+
+    AppointmentInput:
+      type: object
+      required:
+        - customerId
+        - carId
+        - date
+        - time
+      properties:
+        customerId:
+          type: integer
+        carId:
+          type: integer
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          format: time
+        notes:
+          type: string
+
+    WaitlistAppointment:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        carId:
+          type: integer
+        notes:
+          type: string
+
+    WaitlistAppointmentInput:
+      type: object
+      required:
+        - customerId
+        - carId
+      properties:
+        customerId:
+          type: integer
+        carId:
+          type: integer
+        notes:
+          type: string
+
+    Pagination:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        currentPage:
+          type: integer
+        itemsPerPage:
+          type: integer
+        totalPages:
+          type: integer

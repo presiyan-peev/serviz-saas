@@ -1,0 +1,5 @@
+# Backup
+docker exec -t serviz-db pg_dump -c -U serviz_user serviz_erp > backup.sql
+
+# Restore
+cat backup.sql | docker exec -i serviz-db psql -U serviz_user -d serviz_erp

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "serviz_user",
+    "password": "your_strong_password",
+    "database": "serviz_erp",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "serviz_user",
+    "password": "your_strong_password",
+    "database": "serviz_erp_test",
+    "host": "db",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "serviz_user",
+    "password": "your_strong_password",
+    "database": "serviz_erp_production",
+    "host": "db",
+    "dialect": "postgres"
+  }
+}
