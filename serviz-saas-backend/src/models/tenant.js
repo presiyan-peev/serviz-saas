@@ -1,3 +1,4 @@
+const User = require("./user");
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
@@ -5,6 +6,7 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations here
       // e.g., Tenant.hasMany(models.User)
+      Tenant.hasMany(User);
     }
   }
 
@@ -23,23 +25,19 @@ module.exports = (sequelize) => {
         },
       },
       // Add other relevant fields here, for example:
-      domain: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      plan: {
-        type: DataTypes.ENUM("basic", "premium", "enterprise"),
-        allowNull: false,
-        defaultValue: "basic",
-      },
-      isActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-      },
+      // domain: {
+      //   type: DataTypes.STRING,
+      //   unique: true,
+      // },
+      // plan: {
+      //   type: DataTypes.ENUM("basic", "premium", "enterprise"),
+      //   allowNull: false,
+      //   defaultValue: "basic",
+      // },
+      // isActive: {
+      //   type: DataTypes.BOOLEAN,
+      //   defaultValue: true,
+      // },
     },
     {
       sequelize,

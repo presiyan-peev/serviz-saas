@@ -10,8 +10,10 @@ const Car = require("./car")(sequelize, DataTypes);
 const Tenant = require("./tenant")(sequelize, DataTypes);
 
 // Define associations
-Tenant.hasMany(User);
-User.belongsTo(Tenant);
+// Tenant.hasMany(User);
+// User.belongsTo(Tenant);
+
+// TODO - premesti gi tiq po modelite
 
 User.hasMany(Order);
 Order.belongsTo(User);
@@ -31,7 +33,10 @@ sequelize
   .then(() =>
     console.log("Database connection has been established successfully.")
   )
-  .catch((err) => console.error("Unable to connect to the database:", err));
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+    console.log("Connection details:", sequelize.config);
+  });
 
 module.exports = {
   sequelize,

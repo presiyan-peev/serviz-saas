@@ -1,3 +1,4 @@
+const Tenant = require("./tenant");
 const { Model, DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
@@ -6,6 +7,7 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations here
       // e.g., User.hasMany(models.Order)
+      User.belongsTo(Tenant);
     }
 
     // Instance method to verify password
@@ -64,17 +66,18 @@ module.exports = (sequelize) => {
           key: "id",
         },
       },
-      lastLogin: {
-        type: DataTypes.DATE,
-      },
-      isActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-      },
+      // lastLogin: {
+      //   type: DataTypes.DATE,
+      // },
+      // isActive: {
+      //   type: DataTypes.BOOLEAN,
+      //   defaultValue: true,
+      // },
     },
     {
       sequelize,
       modelName: "User",
+      tableName: "Users",
       timestamps: true,
       paranoid: true, // Enables soft deletes
       hooks: {
@@ -89,7 +92,7 @@ module.exports = (sequelize) => {
       },
       scopes: {
         activeUsers: {
-          where: { isActive: true },
+          // where: { isActive: true },
         },
       },
     }

@@ -16,6 +16,8 @@ exports.signup = async (username, email, password, tenantName) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the user and associate with the tenant
+    console.log("Creating a new user with username:", username);
+    console.log("tenant:", tenant.id);
     const user = await User.create(
       {
         username,
@@ -28,11 +30,15 @@ exports.signup = async (username, email, password, tenantName) => {
     );
 
     // If everything is successful, commit the transaction
+    console.log("Transaction committed successfully");
     await transaction.commit();
+    console.log("Transaction committed successfully");
 
     // Generate and return the token
+    console.log("Generating token for user:", user.id);
     return generateToken(user.id, tenant.id);
   } catch (error) {
+    // console.log("Error during signup:", error);
     // If there's an error, rollback the transaction
     if (transaction) await transaction.rollback();
     throw error; // Re-throw the error to be handled by the caller

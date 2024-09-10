@@ -6,12 +6,12 @@ module.exports = {
     await queryInterface.createTable("Cars", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal("uuid_generate_v4()"),
       },
       customerId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Customers",
           key: "id",
@@ -37,7 +37,6 @@ module.exports = {
       },
       oldLicensePlates: {
         type: Sequelize.ARRAY(Sequelize.STRING),
-        unique: true,
       },
       vin: {
         type: Sequelize.STRING,
@@ -49,6 +48,9 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deletedAt: {
         type: Sequelize.DATE,
       },
     });
