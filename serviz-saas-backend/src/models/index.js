@@ -7,8 +7,12 @@ const Order = require("./order")(sequelize, DataTypes);
 const Appointment = require("./appointment")(sequelize, DataTypes);
 const Customer = require("./customer")(sequelize, DataTypes);
 const Car = require("./car")(sequelize, DataTypes);
+const Tenant = require("./tenant")(sequelize, DataTypes);
 
 // Define associations
+Tenant.hasMany(User);
+User.belongsTo(Tenant);
+
 User.hasMany(Order);
 Order.belongsTo(User);
 
@@ -36,4 +40,5 @@ module.exports = {
   Appointment,
   Customer,
   Car,
+  Tenant,
 };
