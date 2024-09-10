@@ -28,6 +28,16 @@ module.exports = {
         type: Sequelize.ENUM("admin", "mechanic", "manager"),
         allowNull: false,
       },
+      tenantId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Tenants",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

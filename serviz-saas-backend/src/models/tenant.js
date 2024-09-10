@@ -1,21 +1,29 @@
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  class Order extends Model {
+  class Tenant extends Model {
     static associate(models) {
       // Define associations here
-      // e.g., Order.belongsTo(models.User)
+      // e.g., Tenant.hasMany(models.User)
     }
   }
 
-  Order.init(
+  Tenant.init(
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      orderNumber: {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      // Add other relevant fields here, for example:
+      domain: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -23,30 +31,23 @@ module.exports = (sequelize) => {
           notEmpty: true,
         },
       },
-      userId: {
-        type: DataTypes.UUID,
+      plan: {
+        type: DataTypes.ENUM("basic", "premium", "enterprise"),
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
+        defaultValue: "basic",
       },
-      value: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        validate: {
-          isDecimal: true,
-          min: 0,
-        },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
     },
     {
       sequelize,
-      modelName: "Order",
+      modelName: "Tenant",
       timestamps: true,
       paranoid: true, // Enables soft deletes
     }
   );
 
-  return Order;
+  return Tenant;
 };
