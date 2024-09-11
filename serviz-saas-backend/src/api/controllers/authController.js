@@ -9,7 +9,13 @@ exports.signup = async (req, res) => {
       password,
       tenantName
     );
-    res.json({ token });
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    });
+    res.json({ message: "Login successful" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -19,7 +25,13 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const token = await authService.login(email, password);
-    res.json({ token });
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    });
+    res.json({ message: "Login successful" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -55,4 +67,8 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
+exports.logout = (req, res) => {
+  res.clearCookie("auth_token");
+  res.json({ message: "Logout successful" });
+};
 // Implement other controller methods
