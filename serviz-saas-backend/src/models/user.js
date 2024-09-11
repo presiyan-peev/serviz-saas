@@ -66,6 +66,14 @@ module.exports = (sequelize) => {
           key: "id",
         },
       },
+      resetPasswordToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      resetPasswordExpires: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       // lastLogin: {
       //   type: DataTypes.DATE,
       // },

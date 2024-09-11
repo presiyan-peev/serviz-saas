@@ -19,10 +19,4 @@ const sequelize = new Sequelize(
   }
 );
 
-console.log("Database connection details:", {
-  host: process.env.DB_HOST || "default_host",
-  port: process.env.DB_PORT || "default_port",
-  database: process.env.DB_NAME || "default_db_name",
-});
-
 module.exports = sequelize;

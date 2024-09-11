@@ -1,4 +1,4 @@
-const { verifyToken } = require("../utils/jwtUtils");
+const { verifyToken } = require("../../utils/jwtUtils");
 
 exports.authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];

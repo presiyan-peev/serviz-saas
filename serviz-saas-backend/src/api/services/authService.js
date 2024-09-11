@@ -4,45 +4,94 @@ const { generateToken } = require("../../utils/jwtUtils");
 const { sequelize } = require("../../models"); // Import sequelize instance
 
 exports.signup = async (username, email, password, tenantName) => {
-  // Start a transaction to ensure data consistency
   let transaction;
   try {
     transaction = await sequelize.transaction();
 
-    // Create a new tenant
     const tenant = await Tenant.create({ name: tenantName }, { transaction });
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create the user and associate with the tenant
-    console.log("Creating a new user with username:", username);
-    console.log("tenant:", tenant.id);
     const user = await User.create(
       {
         username,
         email,
-        password: hashedPassword,
+        password: password, // Don't hash the password here
         tenantId: tenant.id,
-        role: "admin", // Assuming the first user of a tenant is an admin
+        role: "admin",
       },
       { transaction }
     );
 
-    // If everything is successful, commit the transaction
-    console.log("Transaction committed successfully");
     await transaction.commit();
-    console.log("Transaction committed successfully");
-
-    // Generate and return the token
-    console.log("Generating token for user:", user.id);
     return generateToken(user.id, tenant.id);
   } catch (error) {
-    // console.log("Error during signup:", error);
-    // If there's an error, rollback the transaction
     if (transaction) await transaction.rollback();
-    throw error; // Re-throw the error to be handled by the caller
+    throw error;
   }
+};
+
+exports.login = async (email, password) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const isPasswordValid = await user.verifyPassword(password);
+  if (!isPasswordValid) {
+    throw new Error("Invalid password");
+  }
+
+  return generateToken(user.id, user.tenantId);
+};
+
+exports.changePassword = async (userId, oldPassword, newPassword) => {
+  const user = await User.findByPk(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const isPasswordValid = await user.verifyPassword(oldPassword);
+  if (!isPasswordValid) {
+    throw new Error("Invalid old password");
+  }
+
+  user.password = await User.hashPassword(newPassword);
+  await user.save();
+};
+
+exports.forgotPassword = async (email) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Generate a password reset token (you may want to use a library for this)
+  const resetToken = Math.random().toString(36).substr(2, 10);
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+  await user.save();
+
+  // Send email with reset token (implement email sending logic)
+  // ...
+
+  return resetToken;
+};
+
+exports.resetPassword = async (resetToken, newPassword) => {
+  const user = await User.findOne({
+    where: {
+      resetPasswordToken: resetToken,
+      resetPasswordExpires: { [Op.gt]: Date.now() },
+    },
+  });
+
+  if (!user) {
+    throw new Error("Invalid or expired reset token");
+  }
+
+  user.password = await User.hashPassword(newPassword);
+  user.resetPasswordToken = null;
+  user.resetPasswordExpires = null;
+  await user.save();
 };
 
 // Implement other auth methods (login, changePassword, etc.)
