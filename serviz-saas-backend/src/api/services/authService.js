@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const { User, Tenant } = require("../../models"); // Import models from index.js
 const { generateToken } = require("../../utils/jwtUtils");
 const { sequelize } = require("../../models"); // Import sequelize instance
+const { Op } = require("sequelize");
 
 exports.signup = async (username, email, password, tenantName) => {
   let transaction;
@@ -88,7 +89,7 @@ exports.resetPassword = async (resetToken, newPassword) => {
     throw new Error("Invalid or expired reset token");
   }
 
-  user.password = await User.hashPassword(newPassword);
+  user.password = newPassword;
   user.resetPasswordToken = null;
   user.resetPasswordExpires = null;
   await user.save();
