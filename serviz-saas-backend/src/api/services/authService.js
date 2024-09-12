@@ -54,7 +54,7 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
     throw new Error("Invalid old password");
   }
 
-  user.password = await User.hashPassword(newPassword);
+  user.password = newPassword;
   await user.save();
 };
 

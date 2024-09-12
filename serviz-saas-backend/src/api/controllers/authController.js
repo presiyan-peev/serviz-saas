@@ -15,7 +15,7 @@ exports.signup = async (req, res) => {
       sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
-    res.json({ message: "Login successful" });
+    res.json({ message: "User created and Login successful" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

@@ -8,6 +8,6 @@ router.post("/login", authController.login);
 router.put("/change-password", authenticate, authController.changePassword);
 router.post("/forgot-password", authController.forgotPassword);
 router.post("/reset-password", authController.resetPassword);
-// Optional: router.post("/logout", authenticate, authController.logout);
+router.post("/logout", authenticate, authController.logout);
 
 module.exports = router;
