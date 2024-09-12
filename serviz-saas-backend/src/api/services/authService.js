@@ -15,7 +15,7 @@ exports.signup = async (username, email, password, tenantName) => {
       {
         username,
         email,
-        password: password, // Don't hash the password here
+        password,
         tenantId: tenant.id,
         role: "admin",
       },
