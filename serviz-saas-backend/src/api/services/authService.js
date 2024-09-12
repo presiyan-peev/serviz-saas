@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 const { User, Tenant } = require("../../models"); // Import models from index.js
 const { generateToken } = require("../../utils/jwtUtils");
 const { sequelize } = require("../../models"); // Import sequelize instance
@@ -17,7 +16,7 @@ exports.signup = async (username, email, password, tenantName) => {
         email,
         password,
         tenantId: tenant.id,
-        role: "admin",
+        role: "manager",
       },
       { transaction }
     );

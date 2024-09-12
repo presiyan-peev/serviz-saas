@@ -16,7 +16,7 @@ exports.authenticate = (req, res, next) => {
   }
 };
 
-exports.isAdmin = async (req, res, next) => {
+exports.addUserToReq = async (req, res, next) => {
   try {
     if (!req.userId) {
       return res.status(401).json({ error: "Authentication required" });
@@ -26,15 +26,10 @@ exports.isAdmin = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    if (user.role !== "admin") {
-      return res
-        .status(403)
-        .json({ error: "Access denied. Admin role required." });
-    }
-    req.user = user; // Optionally attach the user object to the request
+    req.user = user;
     next();
   } catch (error) {
-    console.error("Error in isAdmin middleware:", error);
+    console.error("Error in addUserToReq middleware:", error);
     res.status(500).json({ error: "Server error" });
   }
 };

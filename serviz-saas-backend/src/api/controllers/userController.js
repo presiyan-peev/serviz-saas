@@ -1,30 +1,44 @@
-const { User } = require("../../models"); // Import models from index.js
+const { User } = require("../../models");
 
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
-    // ... (previous validation code)
+    const creatorRole = req.user.role;
+    const creatorTenantId = req.user.tenantId;
+
+    // Access control checks
+    if (!["admin", "manager"].includes(creatorRole)) {
+      return res
+        .status(403)
+        .json({ error: "Forbidden: Insufficient permissions" });
+    }
+
+    // Role validation based on creator's role
+    if (creatorRole === "manager" && !["mechanic", "manager"].includes(role)) {
+      return res
+        .status(403)
+        .json({ error: "Forbidden: Invalid role assignment" });
+    }
+
+    // Determine tenantId
+    let tenantId = creatorTenantId;
+    if (creatorRole === "admin" && role === "admin") {
+      tenantId = "00000000-0000-0000-0000-000000000000";
+    }
 
     // Create new user
     const user = await User.create({
       username,
       email,
       password,
-      tenantId: req.tenantId,
       role,
+      tenantId,
     });
 
-    // Return success response
     res
       .status(201)
-      .json({ message: "User created successfully", userId: user._id });
+      .json({ message: "User created successfully", userId: user.name });
   } catch (error) {
-    if (error.code === 11000) {
-      // MongoDB duplicate key error
-      return res
-        .status(400)
-        .json({ error: "Username or email already exists" });
-    }
     console.error(error);
     res.status(500).json({ error: "Server error" });
   }
