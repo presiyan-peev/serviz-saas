@@ -42,7 +42,7 @@ exports.getUser = async (requestingUser, userId) => {
     attributes: { exclude: ["password"] },
     include:
       requestingUser.role === "admin"
-        ? [{ model: Tenant, attributes: ["name"] }]
+        ? [{ model: Tenant, attributes: ["name"], as: "tenant" }]
         : [],
   });
 
