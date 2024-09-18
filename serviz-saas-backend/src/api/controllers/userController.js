@@ -40,7 +40,11 @@ exports.createUser = async (req, res) => {
       .status(201)
       .json({ message: "User created successfully", userId: user.name });
   } catch (error) {
-    console.error(error);
+    if (error.cause) {
+      return res
+        .status(error.cause)
+        .json({ error: error.message, status: error.cause });
+    }
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -56,6 +60,11 @@ exports.getUsers = async (req, res, next) => {
     });
     res.json(users);
   } catch (error) {
+    if (error.cause) {
+      return res
+        .status(error.cause)
+        .json({ error: error.message, status: error.cause });
+    }
     next(error);
   }
 };
@@ -63,13 +72,20 @@ exports.getUsers = async (req, res, next) => {
 exports.getUserById = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const user = await userService.getUser(req.user, userId);
+    const user = await userService.getUserById(req.user, userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
     res.json(user);
   } catch (error) {
+    console.error({ error: error.cause });
+    if (error.cause) {
+      return res
+        .status(error.cause)
+        .json({ error: error.message, status: error.cause });
+    }
     next(error);
+    // res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -85,6 +101,11 @@ exports.updateUser = async (req, res, next) => {
     );
     res.json(updatedUser);
   } catch (error) {
+    if (error.cause) {
+      return res
+        .status(error.cause)
+        .json({ error: error.message, status: error.cause });
+    }
     next(error);
   }
 };

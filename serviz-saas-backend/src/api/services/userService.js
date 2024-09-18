@@ -37,7 +37,7 @@ exports.getUsers = async (requestingUser, { page, limit, sort, filter }) => {
   };
 };
 
-exports.getUser = async (requestingUser, userId) => {
+exports.getUserById = async (requestingUser, userId) => {
   const user = await User.findByPk(userId, {
     attributes: { exclude: ["password"] },
     include:
@@ -54,7 +54,7 @@ exports.getUser = async (requestingUser, userId) => {
     requestingUser.role !== "admin" &&
     user.tenantId !== requestingUser.tenantId
   ) {
-    throw new Error("Forbidden");
+    throw new Error("User not found", { cause: 404 });
   }
 
   return user;
@@ -75,18 +75,18 @@ exports.updateUser = async (requestingUser, userId, updateData) => {
   const user = await User.findByPk(userId);
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("User not found", { cause: 404 });
   }
 
   if (requestingUser.role === "mechanic" && userId !== requestingUser.id) {
-    throw new Error("Forbidden");
+    throw new Error("User not found", { cause: 404 });
   }
 
   if (
     requestingUser.role === "manager" &&
     user.tenantId !== requestingUser.tenantId
   ) {
-    throw new Error("Forbidden");
+    throw new Error("User not found", { cause: 404 });
   }
 
   delete updateData.password; // Ensure password can't be updated here
