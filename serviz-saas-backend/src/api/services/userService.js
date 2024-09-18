@@ -26,7 +26,7 @@ exports.getUsers = async (requestingUser, { page, limit, sort, filter }) => {
     attributes: { exclude: ["password"] },
     include:
       requestingUser.role === "admin"
-        ? [{ model: Tenant, attributes: ["name"] }]
+        ? [{ model: Tenant, attributes: ["name"], as: "tenant" }]
         : [],
   });
 

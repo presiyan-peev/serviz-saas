@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations here
       // e.g., User.hasMany(models.Order)
-      User.belongsTo(Tenant);
+      User.belongsTo(models.Tenant, { foreignKey: "tenantId", as: "tenant" });
     }
 
     // Instance method to verify password

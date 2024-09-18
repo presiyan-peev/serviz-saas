@@ -1,13 +1,29 @@
+const fs = require("fs");
+const path = require("path");
+
 const sequelize = require("../config/database");
 const { DataTypes } = require("sequelize");
 
+const basename = path.basename(__filename);
+const db = {};
+
 // Import models
-const User = require("./user")(sequelize, DataTypes);
-const Order = require("./order")(sequelize, DataTypes);
-const Appointment = require("./appointment")(sequelize, DataTypes);
-const Customer = require("./customer")(sequelize, DataTypes);
-const Car = require("./car")(sequelize, DataTypes);
-const Tenant = require("./tenant")(sequelize, DataTypes);
+fs.readdirSync(__dirname)
+  .filter((file) => {
+    return (
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+    );
+  })
+  .forEach((file) => {
+    const model = require(path.join(__dirname, file))(sequelize, DataTypes);
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
 // Define associations
 // Tenant.hasMany(User);
@@ -15,17 +31,17 @@ const Tenant = require("./tenant")(sequelize, DataTypes);
 
 // TODO - premesti gi tiq po modelite
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
-Customer.hasMany(Car);
-Car.belongsTo(Customer);
+// Customer.hasMany(Car);
+// Car.belongsTo(Customer);
 
-Customer.hasMany(Appointment);
-Appointment.belongsTo(Customer);
+// Customer.hasMany(Appointment);
+// Appointment.belongsTo(Customer);
 
-Car.hasMany(Appointment);
-Appointment.belongsTo(Car);
+// Car.hasMany(Appointment);
+// Appointment.belongsTo(Car);
 
 // Test the connection
 sequelize
@@ -38,12 +54,6 @@ sequelize
     console.log("Connection details:", sequelize.config);
   });
 
-module.exports = {
-  sequelize,
-  User,
-  Order,
-  Appointment,
-  Customer,
-  Car,
-  Tenant,
-};
+db.sequelize = sequelize;
+
+module.exports = { ...db };

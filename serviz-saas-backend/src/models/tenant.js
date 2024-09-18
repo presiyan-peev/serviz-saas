@@ -1,4 +1,3 @@
-const User = require("./user");
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
@@ -6,7 +5,7 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations here
       // e.g., Tenant.hasMany(models.User)
-      Tenant.hasMany(User);
+      Tenant.hasMany(models.User, { foreignKey: "tenantId" });
     }
   }
 
