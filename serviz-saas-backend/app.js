@@ -28,6 +28,12 @@ app.use("/api", userRoutes);
 // Basic error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
+  console.error({ pri4inaaaaaaa: err.cause });
+  if (err.cause) {
+    return res
+      .status(err.cause)
+      .json({ error: err.message, status: err.cause });
+  }
   res.status(500).send("Something broke!");
 });
 

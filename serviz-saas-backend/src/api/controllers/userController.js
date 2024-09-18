@@ -40,12 +40,7 @@ exports.createUser = async (req, res) => {
       .status(201)
       .json({ message: "User created successfully", userId: user.name });
   } catch (error) {
-    if (error.cause) {
-      return res
-        .status(error.cause)
-        .json({ error: error.message, status: error.cause });
-    }
-    res.status(500).json({ error: "Server error" });
+    next(error);
   }
 };
 
@@ -60,11 +55,6 @@ exports.getUsers = async (req, res, next) => {
     });
     res.json(users);
   } catch (error) {
-    if (error.cause) {
-      return res
-        .status(error.cause)
-        .json({ error: error.message, status: error.cause });
-    }
     next(error);
   }
 };
@@ -78,14 +68,7 @@ exports.getUserById = async (req, res, next) => {
     }
     res.json(user);
   } catch (error) {
-    console.error({ error: error.cause });
-    if (error.cause) {
-      return res
-        .status(error.cause)
-        .json({ error: error.message, status: error.cause });
-    }
     next(error);
-    // res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -101,11 +84,6 @@ exports.updateUser = async (req, res, next) => {
     );
     res.json(updatedUser);
   } catch (error) {
-    if (error.cause) {
-      return res
-        .status(error.cause)
-        .json({ error: error.message, status: error.cause });
-    }
     next(error);
   }
 };
