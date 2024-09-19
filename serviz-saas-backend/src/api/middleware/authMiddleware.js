@@ -19,12 +19,12 @@ exports.authenticate = (req, res, next) => {
 exports.addUserToReq = async (req, res, next) => {
   try {
     if (!req.userId) {
-      return res.status(401).json({ error: "Authentication required" });
+      throw new Error("Authentication required", { cause: 401 });
     }
 
     const user = await User.findByPk(req.userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      throw new Error("Logged-in user not found", { cause: 401 });
     }
     req.user = user;
     next();

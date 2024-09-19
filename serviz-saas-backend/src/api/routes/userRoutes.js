@@ -17,5 +17,11 @@ router.put(
   addUserToReq,
   userController.updateUser
 );
+router.delete(
+  "/users/:userId",
+  authenticate,
+  addUserToReq,
+  userController.deleteUser
+);
 
 module.exports = router;

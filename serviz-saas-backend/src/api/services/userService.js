@@ -96,3 +96,27 @@ exports.updateUser = async (requestingUser, userId, updateData) => {
   // TODO: Don't return sensitive data pls
   return user;
 };
+
+exports.deleteUser = async (requestingUser, userId) => {
+  const user = await User.findByPk(userId);
+
+  if (!user || user.tenantId !== requestingUser.tenantId) {
+    throw new Error("User not found", { cause: 404 });
+  }
+
+  if (requestingUser.role === "mechanic" || userId === requestingUser.id) {
+    throw new Error("Forbidden", { cause: 403 });
+  }
+
+  // Perform the deletion (soft delete if paranoid is true)
+  await user.destroy();
+
+  await this.logActivity(
+    requestingUser.id,
+    "DELETE_USER",
+    `Deleted user ${userId}`,
+    requestingUser.ipAddress
+  );
+
+  return user; // Optionally return the deleted user data or a success message
+};

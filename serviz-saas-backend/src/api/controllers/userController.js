@@ -87,3 +87,13 @@ exports.updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    await userService.deleteUser(req.user, userId);
+    res.status(204).send(); // No content to return on successful deletion
+  } catch (error) {
+    next(error);
+  }
+};

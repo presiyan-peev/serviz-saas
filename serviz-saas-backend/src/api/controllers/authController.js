@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
     });
     res.json({ message: "User created and Login successful" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };
 
@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
     });
     res.json({ message: "Login successful" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };
 
@@ -43,7 +43,7 @@ exports.changePassword = async (req, res) => {
     await authService.changePassword(req.userId, oldPassword, newPassword);
     res.json({ message: "Password changed successfully" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };
 
@@ -53,7 +53,7 @@ exports.forgotPassword = async (req, res) => {
     const resetToken = await authService.forgotPassword(email);
     res.json({ message: "Password reset email sent", resetToken });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };
 
@@ -63,7 +63,7 @@ exports.resetPassword = async (req, res) => {
     await authService.resetPassword(resetToken, newPassword);
     res.json({ message: "Password reset successfully" });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };
 
