@@ -74,19 +74,12 @@ exports.logActivity = async (userId, action, details, ipAddress) => {
 exports.updateUser = async (requestingUser, userId, updateData) => {
   const user = await User.findByPk(userId);
 
-  if (!user) {
+  if (!user || user.tenantId !== requestingUser.tenantId) {
     throw new Error("User not found", { cause: 404 });
   }
 
   if (requestingUser.role === "mechanic" && userId !== requestingUser.id) {
-    throw new Error("User not found", { cause: 404 });
-  }
-
-  if (
-    requestingUser.role === "manager" &&
-    user.tenantId !== requestingUser.tenantId
-  ) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Forbidden", { cause: 403 });
   }
 
   delete updateData.password; // Ensure password can't be updated here
@@ -100,5 +93,6 @@ exports.updateUser = async (requestingUser, userId, updateData) => {
     requestingUser.ipAddress
   );
 
+  // TODO: Don't return sensitive data pls
   return user;
 };

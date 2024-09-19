@@ -27,8 +27,9 @@ app.use("/api", userRoutes);
 
 // Basic error handling
 app.use((err, req, res, next) => {
+  console.log("Non-blocking error");
+  console.log("Error Stack");
   console.error(err.stack);
-  console.error({ pri4inaaaaaaa: err.cause });
   if (err.cause) {
     return res
       .status(err.cause)
