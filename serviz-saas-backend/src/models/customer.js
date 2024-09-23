@@ -5,6 +5,7 @@ module.exports = (sequelize) => {
     static associate(models) {
       // Define associations here
       // e.g., Customer.hasMany(models.Order)
+      Customer.hasMany(models.Car); // Added association to Car
     }
   }
 
@@ -30,7 +31,12 @@ module.exports = (sequelize) => {
       phone: {
         type: DataTypes.STRING,
       },
-      // Add more fields as needed
+      facebook: {
+        type: DataTypes.STRING, // To store the customer's Facebook profile link
+      },
+      notes: {
+        type: DataTypes.STRING, // To store any additional notes about the customer
+      },
     },
     {
       sequelize,

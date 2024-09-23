@@ -673,13 +673,19 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
+          description: Unique identifier for the customer
         name:
           type: string
+          description: Name of the customer
         phone:
           type: string
+          description: Phone number of the customer (optional)
         email:
           type: string
+          format: email
+          description: Email address of the customer
         facebook:
           type: string
         notes:
@@ -750,28 +756,26 @@ components:
       properties:
         id:
           type: integer
+        customerId:
+          type: integer
         make:
           type: string
         model:
           type: string
-        registrationPlate:
-          type: string
-        vinNumber:
-          type: string
-        yearOfProduction:
+        year:
           type: integer
+        licensePlate:
+          type: string
+        oldLicensePlates:
+          type: array
+        vin:
+          type: string
         power:
           type: string
         fuel:
           type: string
         cubicCapacity:
           type: number
-        ownerId:
-          type: integer
-        owner:
-          type: object
-          properties:
-            $ref: "#/components/schemas/Customer"
 
     CarInput:
       type: object

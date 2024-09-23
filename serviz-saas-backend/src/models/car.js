@@ -11,12 +11,12 @@ module.exports = (sequelize) => {
   Car.init(
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID, // Changed from INTEGER to UUID for consistency
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
       customerId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID, // Changed from INTEGER to UUID to match Customer model
         allowNull: true,
         references: {
           model: "Customers",
@@ -64,6 +64,15 @@ module.exports = (sequelize) => {
           notEmpty: true,
           len: [17, 17],
         },
+      },
+      power: {
+        type: DataTypes.STRING, // To store the power of the car
+      },
+      fuel: {
+        type: DataTypes.STRING, // To store the type of fuel the car uses
+      },
+      cubicCapacity: {
+        type: DataTypes.FLOAT, // To store the engine's cubic capacity
       },
     },
     {
