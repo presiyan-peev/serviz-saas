@@ -1,6 +1,7 @@
 const express = require("express");
 const authRoutes = require("./src/api/routes/authRoutes");
 const userRoutes = require("./src/api/routes/userRoutes");
+const customerRoutes = require("./src/api/routes/customerRoutes");
 const cookieParser = require("cookie-parser");
 const csrfProtection = require("./src/api/middleware/csrfMiddleware");
 
@@ -22,7 +23,7 @@ app.use(express.json());
 // Use auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
-
+app.use("/api", customerRoutes);
 // Other routes...
 
 // Basic error handling
