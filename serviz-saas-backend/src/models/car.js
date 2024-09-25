@@ -3,8 +3,8 @@ const { Model, DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   class Car extends Model {
     static associate(models) {
-      // Define associations here
       Car.belongsTo(models.Customer);
+      Car.belongsTo(models.Tenant, { foreignKey: "tenantId", as: "tenant" });
     }
   }
 
@@ -73,6 +73,15 @@ module.exports = (sequelize) => {
       },
       cubicCapacity: {
         type: DataTypes.FLOAT, // To store the engine's cubic capacity
+      },
+      tenantId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "Tenants",
+          key: "id",
+        },
+        // To store the ID of the tenant this car belongs to
       },
     },
     {

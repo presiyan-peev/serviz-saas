@@ -6,6 +6,8 @@ module.exports = (sequelize) => {
       // Define associations here
       // e.g., Tenant.hasMany(models.User)
       Tenant.hasMany(models.User, { foreignKey: "tenantId" });
+      Tenant.hasMany(models.Customer, { foreignKey: "tenantId" });
+      Tenant.hasMany(models.Car, { foreignKey: "tenantId" });
     }
   }
 

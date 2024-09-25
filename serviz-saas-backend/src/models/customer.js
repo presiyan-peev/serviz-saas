@@ -6,6 +6,10 @@ module.exports = (sequelize) => {
       // Define associations here
       // e.g., Customer.hasMany(models.Order)
       Customer.hasMany(models.Car); // Added association to Car
+      Customer.belongsTo(models.Tenant, {
+        foreignKey: "tenantId",
+        as: "tenant",
+      });
     }
   }
 
@@ -36,6 +40,15 @@ module.exports = (sequelize) => {
       },
       notes: {
         type: DataTypes.STRING, // To store any additional notes about the customer
+      },
+      tenantId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "Tenants",
+          key: "id",
+        },
+        // To store the ID of the tenant this customer belongs to
       },
     },
     {
