@@ -22,7 +22,7 @@ exports.getCars = async (user, include = []) => {
       as: "owner",
     });
   }
-  console.log({ includeOptions, whereClause });
+
   const cars = await Car.findAll({
     where: whereClause,
     include: includeOptions,
@@ -95,14 +95,7 @@ exports.createBulkCars = async (user, carsData) => {
 
   for (let i = 0; i < carsData.length; i++) {
     try {
-      if (user.role === "admin") {
-        if (!carsData[i].tenantId) {
-          throw new Error("TenantId is required for admin users");
-        }
-      } else {
-        if (carsData[i].tenantId && carsData[i].tenantId !== user.tenantId) {
-          throw new Error("Invalid tenantId");
-        }
+      if (user.role !== "admin") {
         carsData[i].tenantId = user.tenantId;
       }
       const car = await Car.create(carsData[i]);
@@ -127,4 +120,36 @@ exports.createBulkCars = async (user, carsData) => {
   }
 
   return result;
+};
+
+exports.updateCar = async (user, carId, carData) => {
+  const car = await Car.findByPk(carId);
+
+  if (!car) {
+    throw new Error("Car not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin" && car.tenantId !== user.tenantId) {
+    throw new Error("Car not found", { cause: 404 });
+  }
+
+  // Ensure tenantId cannot be modified
+  delete carData.tenantId;
+
+  const updatedCar = await car.update(carData);
+  return updatedCar;
+};
+
+exports.deleteCar = async (user, carId) => {
+  const car = await Car.findByPk(carId);
+
+  if (!car) {
+    throw new Error("Car not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin" && car.tenantId !== user.tenantId) {
+    throw new Error("Car not found", { cause: 404 });
+  }
+
+  await car.destroy();
 };

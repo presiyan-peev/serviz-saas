@@ -3,6 +3,7 @@ const carController = require("../controllers/carController");
 const { authenticate, addUserToReq } = require("../middleware/authMiddleware");
 const {
   validateCarInput,
+  validateCarUpdateInput,
   validateBulkCarInput,
 } = require("../middleware/carMiddleware");
 const router = express.Router();
@@ -23,5 +24,15 @@ router.post(
   validateBulkCarInput,
   carController.createBulkCars
 );
+
+router.put(
+  "/cars/:id",
+  authenticate,
+  addUserToReq,
+  validateCarUpdateInput,
+  carController.updateCar
+);
+
+router.delete("/cars/:id", authenticate, addUserToReq, carController.deleteCar);
 
 module.exports = router;

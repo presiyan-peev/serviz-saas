@@ -42,3 +42,27 @@ exports.createBulkCars = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.updateCar = async (req, res, next) => {
+  try {
+    const updatedCar = await carService.updateCar(
+      req.user,
+      req.params.id,
+      req.body
+    );
+    res.json(updatedCar);
+  } catch (error) {
+    console.log("Failed to update car");
+    next(error);
+  }
+};
+
+exports.deleteCar = async (req, res, next) => {
+  try {
+    await carService.deleteCar(req.user, req.params.id);
+    res.status(204).send();
+  } catch (error) {
+    console.log("Failed to delete car");
+    next(error);
+  }
+};
