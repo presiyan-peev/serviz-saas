@@ -2,6 +2,7 @@ const express = require("express");
 const authRoutes = require("./src/api/routes/authRoutes");
 const userRoutes = require("./src/api/routes/userRoutes");
 const customerRoutes = require("./src/api/routes/customerRoutes");
+const carRoutes = require("./src/api/routes/carRoutes");
 const cookieParser = require("cookie-parser");
 const csrfProtection = require("./src/api/middleware/csrfMiddleware");
 
@@ -28,11 +29,11 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", customerRoutes);
+app.use("/api", carRoutes);
 // Other routes...
 
 // Basic error handling
 app.use((err, req, res, next) => {
-  console.log("Non-blocking error");
   console.log("Error Stack");
   console.error(err.stack);
   if (err.cause) {

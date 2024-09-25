@@ -133,7 +133,7 @@ paths:
           name: include
           schema:
             type: string
-          description: Comma-separated list of related resources to include (e.g., 'customers')
+          description: Comma-separated list of related resources to include (e.g., 'owner')
       responses:
         "200":
           description: Successful response
@@ -173,6 +173,11 @@ paths:
           required: true
           schema:
             type: integer
+        - in: query
+          name: include
+          schema:
+            type: string
+          description: Comma-separated list of related resources to include (e.g., 'owner')
       responses:
         "200":
           description: Successful response
