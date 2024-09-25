@@ -54,6 +54,8 @@ module.exports = (sequelize) => {
     {
       sequelize,
       modelName: "Customer",
+      timestamps: true,
+      paranoid: true, // Enables soft deletes
     }
   );
 

@@ -54,7 +54,7 @@ exports.getUserById = async (requestingUser, userId) => {
     requestingUser.role !== "admin" &&
     user.tenantId !== requestingUser.tenantId
   ) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Fetch user failed: User not found", { cause: 404 });
   }
 
   return user;
@@ -75,11 +75,11 @@ exports.updateUser = async (requestingUser, userId, updateData) => {
   const user = await User.findByPk(userId);
 
   if (!user || user.tenantId !== requestingUser.tenantId) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Update user failed: User not found", { cause: 404 });
   }
 
   if (requestingUser.role === "mechanic" && userId !== requestingUser.id) {
-    throw new Error("Forbidden", { cause: 403 });
+    throw new Error("Update user failed: Forbidden", { cause: 403 });
   }
 
   delete updateData.password; // Ensure password can't be updated here
@@ -101,11 +101,11 @@ exports.deleteUser = async (requestingUser, userId) => {
   const user = await User.findByPk(userId);
 
   if (!user || user.tenantId !== requestingUser.tenantId) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Delete user failed: User not found", { cause: 404 });
   }
 
   if (requestingUser.role === "mechanic" || userId === requestingUser.id) {
-    throw new Error("Forbidden", { cause: 403 });
+    throw new Error("Delete user failed: Forbidden", { cause: 403 });
   }
 
   // Perform the deletion (soft delete if paranoid is true)

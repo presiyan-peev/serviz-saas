@@ -21,6 +21,10 @@ app.use(express.json());
 // });
 
 // Use auth routes
+app.use((req, res, next) => {
+  console.log("Received request", req.method, req.url, req.body);
+  next();
+});
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", customerRoutes);

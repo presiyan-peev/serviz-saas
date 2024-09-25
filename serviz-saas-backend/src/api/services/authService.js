@@ -32,12 +32,12 @@ exports.signup = async (username, email, password, tenantName) => {
 exports.login = async (email, password) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Login failed: User not found", { cause: 404 });
   }
 
   const isPasswordValid = await user.verifyPassword(password);
   if (!isPasswordValid) {
-    throw new Error("Invalid password", { cause: 401 });
+    throw new Error("Login failed: Invalid password", { cause: 401 });
   }
 
   return generateToken(user.id, user.tenantId);
@@ -46,12 +46,14 @@ exports.login = async (email, password) => {
 exports.changePassword = async (userId, oldPassword, newPassword) => {
   const user = await User.findByPk(userId);
   if (!user) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Change password failed: User not found", { cause: 404 });
   }
 
   const isPasswordValid = await user.verifyPassword(oldPassword);
   if (!isPasswordValid) {
-    throw new Error("Invalid old password", { cause: 401 });
+    throw new Error("Change password failed: Invalid old password", {
+      cause: 401,
+    });
   }
 
   user.password = newPassword;
@@ -61,7 +63,7 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
 exports.forgotPassword = async (email) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    throw new Error("User not found", { cause: 404 });
+    throw new Error("Forgot password failed: User not found", { cause: 404 });
   }
 
   // Generate a password reset token (you may want to use a library for this)
@@ -85,7 +87,9 @@ exports.resetPassword = async (resetToken, newPassword) => {
   });
 
   if (!user) {
-    throw new Error("Invalid or expired reset token", { cause: 400 });
+    throw new Error("Reset password failed: Invalid or expired reset token", {
+      cause: 400,
+    });
   }
 
   user.password = newPassword;

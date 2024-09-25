@@ -64,7 +64,9 @@ exports.getUserById = async (req, res, next) => {
     const { userId } = req.params;
     const user = await userService.getUserById(req.user, userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res
+        .status(404)
+        .json({ error: "Fetch user failed: User not found" });
     }
     res.json(user);
   } catch (error) {

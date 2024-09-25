@@ -49,3 +49,58 @@ exports.getCustomerById = async (user, customerId) => {
 
   return customer;
 };
+
+exports.createCustomer = async (user, customerData) => {
+  let tenantId = user.tenantId;
+
+  if (user.role === "admin" && customerData.tenantId) {
+    tenantId = customerData.tenantId;
+  }
+
+  const customer = await Customer.create({
+    ...customerData,
+    tenantId,
+  });
+
+  return customer;
+};
+
+exports.updateCustomer = async (user, customerId, updateData) => {
+  const customer = await Customer.findByPk(customerId);
+
+  if (!customer) {
+    throw new Error("Customer not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin" && customer.tenantId !== user.tenantId) {
+    throw new Error("Customer not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin") {
+    delete updateData.tenantId;
+    delete updateData.createdAt;
+    delete updateData.updatedAt;
+  }
+
+  await customer.update(updateData);
+
+  return customer;
+};
+
+exports.deleteCustomer = async (user, customerId) => {
+  const customer = await Customer.findByPk(customerId);
+
+  if (!customer) {
+    throw new Error("Customer not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin" && customer.tenantId !== user.tenantId) {
+    throw new Error("Customer not found", { cause: 404 });
+  }
+
+  if (user.role === "mechanic") {
+    throw new Error("Forbidden", { cause: 403 });
+  }
+
+  await customer.destroy();
+};
