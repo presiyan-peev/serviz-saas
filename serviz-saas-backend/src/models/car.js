@@ -39,7 +39,7 @@ module.exports = (sequelize) => {
       },
       year: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         validate: {
           isInt: true,
           min: 1900,
@@ -48,10 +48,6 @@ module.exports = (sequelize) => {
       },
       licensePlate: {
         type: DataTypes.STRING,
-        unique: true,
-        validate: {
-          notEmpty: true,
-        },
       },
       oldLicensePlates: {
         type: DataTypes.ARRAY(DataTypes.STRING),

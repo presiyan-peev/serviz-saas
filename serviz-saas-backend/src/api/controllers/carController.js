@@ -22,3 +22,23 @@ exports.getCarById = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.createCar = async (req, res, next) => {
+  try {
+    const car = await carService.createCar(req.user, req.body);
+    res.status(201).json(car);
+  } catch (error) {
+    console.log("Failed to create car");
+    next(error);
+  }
+};
+
+exports.createBulkCars = async (req, res, next) => {
+  try {
+    const result = await carService.createBulkCars(req.user, req.body.items);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log("Failed to create cars in bulk");
+    next(error);
+  }
+};
