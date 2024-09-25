@@ -4,7 +4,7 @@ const { User } = require("../../models"); // Import models from index.js
 exports.authenticate = (req, res, next) => {
   const token = req.cookies.auth_token;
   if (!token) {
-    return res.status(401).json({ error: "No token provided" });
+    throw new Error("No token provided", { cause: 401 });
   }
   try {
     const decoded = verifyToken(token);
@@ -12,7 +12,7 @@ exports.authenticate = (req, res, next) => {
     req.tenantId = decoded.tenantId;
     next();
   } catch (error) {
-    res.status(401).json({ error: "Invalid token" });
+    throw new Error("Invalid token", { cause: 401 });
   }
 };
 
@@ -30,6 +30,8 @@ exports.addUserToReq = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Error in addUserToReq middleware:", error);
-    res.status(500).json({ error: "Server error" });
+    throw new Error("Server error while adding user to request", {
+      cause: 500,
+    });
   }
 };
