@@ -3,8 +3,8 @@ const { Model, DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   class Order extends Model {
     static associate(models) {
-      // Define associations here
-      // e.g., Order.belongsTo(models.User)
+      Order.belongsTo(models.User, { foreignKey: "userId" });
+      Order.belongsTo(models.Tenant, { foreignKey: "tenantId" });
     }
   }
 
@@ -31,6 +31,14 @@ module.exports = (sequelize) => {
           key: "id",
         },
       },
+      tenantId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "Tenants",
+          key: "id",
+        },
+      },
       value: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
@@ -38,6 +46,9 @@ module.exports = (sequelize) => {
           isDecimal: true,
           min: 0,
         },
+      },
+      notes: {
+        type: DataTypes.STRING,
       },
     },
     {

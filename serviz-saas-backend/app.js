@@ -3,6 +3,7 @@ const authRoutes = require("./src/api/routes/authRoutes");
 const userRoutes = require("./src/api/routes/userRoutes");
 const customerRoutes = require("./src/api/routes/customerRoutes");
 const carRoutes = require("./src/api/routes/carRoutes");
+const orderRoutes = require("./src/api/routes/orderRoutes");
 const cookieParser = require("cookie-parser");
 const csrfProtection = require("./src/api/middleware/csrfMiddleware");
 
@@ -30,6 +31,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", customerRoutes);
 app.use("/api", carRoutes);
+app.use("/api", orderRoutes);
 // Other routes...
 
 // Basic error handling

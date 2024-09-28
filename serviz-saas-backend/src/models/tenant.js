@@ -8,6 +8,7 @@ module.exports = (sequelize) => {
       Tenant.hasMany(models.User, { foreignKey: "tenantId" });
       Tenant.hasMany(models.Customer, { foreignKey: "tenantId" });
       Tenant.hasMany(models.Car, { foreignKey: "tenantId" });
+      Tenant.hasMany(models.Order, { foreignKey: "tenantId" }); // Add this line
     }
   }
 

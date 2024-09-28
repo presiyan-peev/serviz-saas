@@ -21,7 +21,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const token = await authService.login(email, password);
@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.changePassword = async (req, res) => {
+exports.changePassword = async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body;
     await authService.changePassword(req.userId, oldPassword, newPassword);
