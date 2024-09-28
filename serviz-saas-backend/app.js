@@ -33,7 +33,11 @@ app.use("/api", customerRoutes);
 app.use("/api", carRoutes);
 app.use("/api", orderRoutes);
 // Other routes...
-
+// Add this at the end of your routes, but before the error handling middleware
+app.use((req, res) => {
+  console.log("Unhandled request:", req.method, req.path);
+  res.status(404).send("Not Found");
+});
 // Basic error handling
 app.use((err, req, res, next) => {
   console.log("Error Stack");

@@ -17,6 +17,7 @@ exports.authenticate = (req, res, next) => {
 };
 
 exports.addUserToReq = async (req, res, next) => {
+  console.log("in addUserToReq");
   try {
     if (!req.userId) {
       throw new Error("Authentication required", { cause: 401 });

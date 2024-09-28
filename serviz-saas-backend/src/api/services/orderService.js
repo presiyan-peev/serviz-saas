@@ -1,5 +1,4 @@
-const { Order, User, Tenant } = require("../../models");
-const { Op } = require("sequelize");
+const { Order, User, Tenant, OrderChange } = require("../../models");
 
 exports.getOrders = async (user, offset, limit) => {
   const queryOptions = {
@@ -65,4 +64,59 @@ exports.getOrderById = async (user, orderId) => {
   }
 
   return order;
+};
+
+exports.deleteOrder = async (user, orderId) => {
+  const order = await Order.findByPk(orderId);
+  if (!order) {
+    throw new Error("Order not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin" && order.tenantId !== user.tenantId) {
+    throw new Error("Unauthorized", { cause: 403 });
+  }
+
+  await OrderChange.create({
+    orderId,
+    userId: user.id,
+    changeType: "DELETE",
+    changes: JSON.stringify(order),
+  });
+
+  await order.destroy();
+};
+
+exports.updateOrder = async (user, orderId, updateData) => {
+  const order = await Order.findByPk(orderId);
+  if (!order) {
+    throw new Error("Order not found", { cause: 404 });
+  }
+
+  if (user.role !== "admin" && order.tenantId !== user.tenantId) {
+    throw new Error("Order not found", { cause: 404 });
+  }
+
+  const oldData = JSON.parse(JSON.stringify(order));
+  await order.update(updateData);
+  await OrderChange.create({
+    orderId,
+    userId: user.id,
+    changeType: "PATCH",
+    changes: JSON.stringify({ old: oldData, new: order }),
+  });
+  return order;
+};
+
+exports.createOrder = async (user, orderData) => {
+  if (user.role === "admin") {
+    throw new Error("Admins cannot create orders", { cause: 403 });
+  }
+
+  const newOrder = await Order.create({
+    ...orderData,
+    userId: user.id,
+    tenantId: user.tenantId,
+  });
+
+  return newOrder;
 };
