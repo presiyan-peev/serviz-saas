@@ -23,7 +23,7 @@ router.post(
   validateCustomerInput,
   customerController.createCustomer
 );
-router.put(
+router.patch(
   "/customers/:id",
   authenticate,
   addUserToReq,

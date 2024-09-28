@@ -25,7 +25,7 @@ router.post(
   carController.createBulkCars
 );
 
-router.put(
+router.patch(
   "/cars/:id",
   authenticate,
   addUserToReq,

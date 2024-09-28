@@ -20,7 +20,7 @@ router.delete(
   addUserToReq,
   orderController.deleteOrder
 );
-router.put(
+router.patch(
   "/orders/:id",
   authenticate,
   addUserToReq,

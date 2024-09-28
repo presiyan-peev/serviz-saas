@@ -11,7 +11,7 @@ router.get(
   userController.getUserById
 );
 router.post("/users", authenticate, addUserToReq, userController.createUser);
-router.put(
+router.patch(
   "/users/:userId",
   authenticate,
   addUserToReq,
