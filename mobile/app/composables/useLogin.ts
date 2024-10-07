@@ -12,7 +12,9 @@ export function useLogin() {
     loading.value = true;
     error.value = null;
     try {
-      const response = await postApi("/login", { email, password });
+      console.log({ email, password });
+      const response = await postApi("/auth/login", { email, password });
+      console.log({ response });
       if (response.token) {
         setAuthToken(response.token);
         return true;
