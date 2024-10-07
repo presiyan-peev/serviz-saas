@@ -12,7 +12,6 @@ export function useLogin() {
     loading.value = true;
     error.value = null;
     try {
-      console.log({ email, password });
       const response = await postApi("/auth/login", { email, password });
       console.log({ response });
       if (response.token) {

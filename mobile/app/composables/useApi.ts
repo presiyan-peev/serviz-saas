@@ -15,8 +15,9 @@ const options = {
 };
 
 const customHeaders = computed(() => ({
-  Authorization: `Bearer ${localStorageAuthToken.value}`,
+  "Content-Type": "application/json",
   Accept: "application/json",
+  Authorization: `Bearer ${localStorageAuthToken.value}`,
 }));
 
 export function useApi() {
@@ -29,7 +30,10 @@ export function useApi() {
     return {
       url: `${BASE_URL}${url}`,
       method: method,
-      headers: { ...customHeaders.value, ...headers },
+      headers: {
+        ...customHeaders.value,
+        ...headers,
+      },
       content: body ? JSON.stringify(body) : undefined,
       allowLargeResponse: true,
       dontFollowRedirects: false,
@@ -40,6 +44,7 @@ export function useApi() {
   }
 
   function handleRequest(options: any) {
+    console.log("Request Options:", options); // Log options for debugging
     return Http.request(options).then(handleResolve).catch(handleReject);
   }
 
@@ -50,6 +55,7 @@ export function useApi() {
   }
 
   function postApi(url: string, body: any, headers?: any) {
+    console.log({ body });
     const options = createRequestOptions("POST", url, body, headers);
     return handleRequest(options);
   }
