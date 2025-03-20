@@ -18,7 +18,12 @@ const app = createApp(App);
 
 app.config.errorHandler = (err, vm, info) => {
   const { logErrorToConsoleAndNotifyUser } = useErrorHandler();
-  logErrorToConsoleAndNotifyUser(err, vm, info);
+  logErrorToConsoleAndNotifyUser(
+    err,
+    vm,
+    info,
+    "Unhandled error on global level"
+  );
 };
 
 registerPlugins(app);
