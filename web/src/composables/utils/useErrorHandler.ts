@@ -1,4 +1,4 @@
-import { useNotify } from "../useNotify";
+import { useNotify } from "../useSnackbar";
 
 const { notifyError } = useNotify();
 

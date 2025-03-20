@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNotify } from "src/composables/useNotify.ts";
+import { useNotify } from "@/composables/useSnackbar";
 
 const { showSnackbar, snackbarProps } = useNotify();
 </script>
