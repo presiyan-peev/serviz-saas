@@ -14,6 +14,6 @@ const username = ref<string>("");
 const password = ref<string>("");
 
 function tryLogin(): void {
-  console.log("xyu");
+  console.log("try to log in");
 }
 </script>

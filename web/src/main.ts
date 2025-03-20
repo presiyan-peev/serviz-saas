@@ -5,16 +5,22 @@
  */
 
 // Plugins
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from "@/plugins";
 
 // Components
-import App from './App.vue'
+import App from "./App.vue";
 
 // Composables
-import { createApp } from 'vue'
+import { createApp } from "vue";
+import { useErrorHandler } from "./composables/utils/useErrorHandler";
 
-const app = createApp(App)
+const app = createApp(App);
 
-registerPlugins(app)
+app.config.errorHandler = (err, vm, info) => {
+  const { logErrorToConsoleAndNotifyUser } = useErrorHandler();
+  logErrorToConsoleAndNotifyUser(err, vm, info);
+};
 
-app.mount('#app')
+registerPlugins(app);
+
+app.mount("#app");
