@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="flex">
+    <v-slide-x-transition v-show="showLogin">
       <LoginForm
         v-model:email="email"
         v-model:password="password"
@@ -8,16 +8,16 @@
         @click:forgotten-password="switchToForgottenPasswordForm"
         @submit="tryLogin"
       />
-    </div>
-    <div>
+    </v-slide-x-transition>
+    <v-slide-x-reverse-transition v-show="!showLogin">
       <ForgottenPasswordForm
         v-model:email="email"
         v-model:password="password"
         :loading="tryingToLogin"
-        @remembered-password="switchToLoginForm"
+        @click:remembered-password="switchToLoginForm"
         @submit="tryToResetPassword"
       />
-    </div>
+    </v-slide-x-reverse-transition>
   </div>
 </template>
 
@@ -28,6 +28,8 @@ import { useAuth } from "@/composables/useAuth";
 const { login } = useAuth();
 const email = ref<string>("");
 const password = ref<string>("");
+
+const showLogin = ref(true);
 
 const tryingToLogin = ref(false);
 const tryLogin: () => Promise<void> = async () => {
@@ -46,10 +48,11 @@ const tryToResetPassword = () => {
 };
 
 const switchToForgottenPasswordForm = () => {
-  //
+  showLogin.value = false;
+  console.log("sw");
 };
 
 const switchToLoginForm = () => {
-  //
+  showLogin.value = true;
 };
 </script>

@@ -20,13 +20,13 @@ defineProps({
   loading: Boolean,
 });
 
-const emit = defineEmits(["submit", "remembered-password"]);
+const emit = defineEmits(["submit", "click:remembered-password"]);
 
 const emitSubmit = () => {
   emit("submit");
 };
 
 const emitRememberedPassword = () => {
-  emit("remembered-password");
+  emit("click:remembered-password");
 };
 </script>
