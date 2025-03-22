@@ -10,6 +10,7 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BaseButton: typeof import('./components/buttons/BaseButton.vue')['default']
     BaseInput: typeof import('./components/text-inputs/BaseInput.vue')['default']
+    ErrorBoundary: typeof import('./components/ErrorBoundary.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
