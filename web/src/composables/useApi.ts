@@ -2,9 +2,12 @@ import axios from "axios";
 import type { QueryParams } from "./useApi.types";
 import { useErrorHandler } from "./utils/useErrorHandler";
 
-const Axios = axios.create({
-  baseURL: "https://some-domain.com/api/",
-  timeout: 1000,
+const API_URL = import.meta.env.VITE_API_URL;
+
+console.log({ env: import.meta.env });
+const AxiosInstance = axios.create({
+  baseURL: API_URL,
+  timeout: 4000,
   headers: { "X-Custom-Header": "foobar" },
 });
 
@@ -30,7 +33,7 @@ export function useApi() {
 
   const getApi = async (url: string, params?: QueryParams) => {
     try {
-      const response = await Axios.get(url, { params });
+      const response = await AxiosInstance.get(url, { params });
       return response;
     } catch (error) {
       handleApiError(error, url);
@@ -39,7 +42,7 @@ export function useApi() {
 
   const postApi = async (url: string, body: object, params?: QueryParams) => {
     try {
-      const response = await Axios.post(url, body, { params });
+      const response = await AxiosInstance.post(url, body, { params });
       return response;
     } catch (error) {
       handleApiError(error, url);
@@ -48,7 +51,7 @@ export function useApi() {
 
   const patchApi = async (url: string, body: object, params?: QueryParams) => {
     try {
-      const response = await Axios.patch(url, body, { params });
+      const response = await AxiosInstance.patch(url, body, { params });
       return response;
     } catch (error) {
       handleApiError(error, url);
@@ -57,7 +60,7 @@ export function useApi() {
 
   const deleteApi = async (url: string, params: QueryParams) => {
     try {
-      const response = await Axios.delete(url, { params });
+      const response = await AxiosInstance.delete(url, { params });
       return response;
     } catch (error) {
       handleApiError(error, url);

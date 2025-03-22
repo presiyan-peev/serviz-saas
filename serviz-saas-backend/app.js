@@ -5,9 +5,19 @@ const customerRoutes = require("./src/api/routes/customerRoutes");
 const carRoutes = require("./src/api/routes/carRoutes");
 const orderRoutes = require("./src/api/routes/orderRoutes");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const csrfProtection = require("./src/api/middleware/csrfMiddleware");
 
 const app = express();
+
+// Add CORS middleware (put this before other middleware)
+app.use(
+  cors({
+    origin: "http://localhost:3003", // Your frontend URL (from the Referer header)
+    credentials: true, // Important if you're sending cookies/authentication
+  })
+);
+
 app.use(cookieParser());
 
 // Middleware to parse JSON bodies

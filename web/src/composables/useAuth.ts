@@ -4,13 +4,13 @@ import type { AxiosResponse } from "axios";
 export function useAuth() {
   const { postApi } = useApi();
   const login: (
-    username: string,
+    email: string,
     password: string
   ) => Promise<AxiosResponse<any, any> | undefined> = async (
-    username,
+    email,
     password
   ) => {
-    return await postApi("/login", { username, password });
+    return await postApi("/auth/login", { email, password });
   };
 
   return {
