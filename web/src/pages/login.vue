@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <v-slide-x-transition v-show="showLogin">
+    <v-slide-x-transition v-show="showLogin" hide-on-leave>
       <LoginForm
         v-model:email="email"
         v-model:password="password"
@@ -9,7 +9,7 @@
         @submit="tryLogin"
       />
     </v-slide-x-transition>
-    <v-slide-x-reverse-transition v-show="!showLogin">
+    <v-slide-x-reverse-transition v-show="!showLogin" hide-on-leave>
       <ForgottenPasswordForm
         v-model:email="email"
         v-model:password="password"
@@ -49,7 +49,6 @@ const tryToResetPassword = () => {
 
 const switchToForgottenPasswordForm = () => {
   showLogin.value = false;
-  console.log("sw");
 };
 
 const switchToLoginForm = () => {
