@@ -8,12 +8,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    AskForPasswordResetForm: typeof import('./components/login/AskForPasswordResetForm.vue')['default']
     BaseButton: typeof import('./components/buttons/BaseButton.vue')['default']
     BaseInput: typeof import('./components/text-inputs/BaseInput.vue')['default']
     ErrorBoundary: typeof import('./components/ErrorBoundary.vue')['default']
     ForgottenPasswordForm: typeof import('./components/login/ForgottenPasswordForm.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LoginForm: typeof import('./components/login/LoginForm.vue')['default']
+    ResetPasswordForm: typeof import('./components/login/ResetPasswordForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheSnackbar: typeof import('./components/dialogs/TheSnackbar.vue')['default']
