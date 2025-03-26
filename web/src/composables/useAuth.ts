@@ -3,7 +3,7 @@ import type { AxiosResponse } from "axios";
 import type { LocationQueryValue } from "vue-router";
 
 export function useAuth() {
-  const { postApi } = useApi();
+  const { postApi, patchApi } = useApi();
 
   const login: (
     email: string,
@@ -12,13 +12,13 @@ export function useAuth() {
     email,
     password
   ) => {
-    return await postApi("/auth/login", "Failed to login", { email, password });
+    return await postApi("/auth/login", { email, password });
   };
 
   const requestPasswordResetToken: (
     email: string
   ) => Promise<AxiosResponse<any, any> | undefined> = async (email) => {
-    return await postApi("/auth/forgot-password", "Failed to ", { email });
+    return await postApi("/auth/forgot-password", { email });
   };
 
   const resetPassword: (
@@ -28,9 +28,22 @@ export function useAuth() {
     password,
     resetToken
   ) => {
-    return await postApi("/auth/reset-password", "Failed to reset password", {
+    return await postApi("/auth/reset-password", {
       password,
       resetToken,
+    });
+  };
+
+  const changePassword: (
+    oldPassowrd: string,
+    newPassword: string
+  ) => Promise<AxiosResponse<any, any> | undefined> = async (
+    oldPassowrd,
+    newPassword
+  ) => {
+    return await patchApi("/auth/change-password", {
+      oldPassowrd,
+      newPassword,
     });
   };
 
@@ -38,5 +51,6 @@ export function useAuth() {
     login,
     requestPasswordResetToken,
     resetPassword,
+    changePassword,
   };
 }

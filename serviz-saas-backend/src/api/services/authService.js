@@ -77,9 +77,6 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
 exports.forgotPassword = async (email) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    console.log("ApiError");
-    console.log(ApiError);
-    console.log(ApiError.toString());
     throw new ApiError("Forgot password failed: User not found", {
       cause: 404,
       internalCode: "Ex10041",

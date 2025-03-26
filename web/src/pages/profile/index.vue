@@ -9,6 +9,10 @@
 </template>
 
 <script setup lang="ts">
+import { useAuth } from "@/composables/useAuth";
+
+const { changePassword } = useAuth();
+
 /**
  * Change Passowrd
  */
@@ -17,6 +21,6 @@ const oldPassword = ref("");
 const newPassword = ref("");
 
 const tryChangingPassword = () => {
-  //
+  changePassword(oldPassword.value, newPassword.value);
 };
 </script>

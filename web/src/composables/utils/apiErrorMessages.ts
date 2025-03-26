@@ -7,4 +7,6 @@ export const apiErrorMessages = {
   Ex10032: "Couldn't change password - old password is incorrect",
   Ex10041: "We couldn't find a user with this email",
   Ex10051: "Link has expired, please try again",
+  // AUTH middleware errors
+  Ex10001: "You have to login, because session has expired",
 };

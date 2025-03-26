@@ -25,27 +25,17 @@ export function useErrorHandler() {
     notifyError({ title: errorMessage });
   };
 
-  const logApiResponseError = (
-    response: AxiosResponse,
-    url: string,
-    errorMessage: string
-  ) => {
-    console.error(errorMessage, url);
-    console.info(response.data);
-    console.info(response.status);
+  const logApiResponseError = (response: AxiosResponse, url: string) => {
+    console.error(response.data);
+    console.error(response.status);
     notifyError({
       title:
         apiErrorMessages[response.data.internalCode] || "Error receiving data",
     });
   };
 
-  const logApiRequestError = (
-    request: AxiosRequestConfig,
-    url: string,
-    errorMessage: string
-  ) => {
-    console.error(errorMessage, url);
-    console.info(request.data);
+  const logApiRequestError = (request: AxiosRequestConfig, url: string) => {
+    console.error(request.data);
     notifyError({ title: "Failed to connect to server" });
   };
 
