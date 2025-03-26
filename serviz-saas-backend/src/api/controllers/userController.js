@@ -1,7 +1,7 @@
 const { User } = require("../../models");
 const userService = require("../services/userService");
 
-exports.createUser = async (req, res) => {
+exports.createUser = async (req, res, next) => {
   try {
     const { username, email, password, role } = req.body;
     const creatorRole = req.user.role;

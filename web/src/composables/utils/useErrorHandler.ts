@@ -24,16 +24,25 @@ export function useErrorHandler() {
     notifyError({ title: errorMessage });
   };
 
-  const logApiResponseError = (response: AxiosResponse, url: string) => {
-    console.error("FAILED RESPONSE FROM: ", url);
-    console.error(response.data);
-    console.error(response.status);
-    console.error(response.headers);
+  const logApiResponseError = (
+    response: AxiosResponse,
+    url: string,
+    errorMessage: string
+  ) => {
+    console.error(errorMessage, url);
+    console.info(response.data);
+    console.info(response.status);
+    notifyError({ title: response.data.internalCode });
   };
 
-  const logApiRequestError = (request: AxiosRequestConfig, url: string) => {
-    console.error("FAILED REQUEST TO: ", url);
-    console.error(request.data);
+  const logApiRequestError = (
+    request: AxiosRequestConfig,
+    url: string,
+    errorMessage: string
+  ) => {
+    console.error(errorMessage, url);
+    console.info(request.data);
+    notifyError({ title: "Failed to connect to server" });
   };
 
   return {

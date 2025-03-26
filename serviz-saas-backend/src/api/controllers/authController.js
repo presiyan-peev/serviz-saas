@@ -1,6 +1,6 @@
 const authService = require("../services/authService");
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res, next) => {
   try {
     const { username, email, tenantName, password } = req.body;
     const token = await authService.signup(
@@ -47,7 +47,7 @@ exports.changePassword = async (req, res, next) => {
   }
 };
 
-exports.forgotPassword = async (req, res) => {
+exports.forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
     const resetToken = await authService.forgotPassword(email);
@@ -57,7 +57,7 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-exports.resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res, next) => {
   try {
     const { resetToken, password } = req.body;
     await authService.resetPassword(resetToken, password);
@@ -67,7 +67,7 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
   res.clearCookie("auth_token");
   res.json({ message: "Logout successful" });
 };

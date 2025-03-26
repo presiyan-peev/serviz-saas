@@ -44,7 +44,7 @@ app.use("/api", carRoutes);
 app.use("/api", orderRoutes);
 // Other routes...
 // Add this at the end of your routes, but before the error handling middleware
-app.use((req, res) => {
+app.use((req, res, next) => {
   console.log("Unhandled request:", req.method, req.path);
   res.status(404).send("Not Found");
 });
@@ -53,9 +53,11 @@ app.use((err, req, res, next) => {
   console.log("Error Stack");
   console.error(err.stack);
   if (err.cause) {
-    return res
-      .status(err.cause)
-      .json({ error: err.message, status: err.cause });
+    return res.status(err.cause).json({
+      error: err.message,
+      status: err.cause,
+      internalCode: err.internalCode,
+    });
   }
   res.status(500).send("Something broke!");
 });

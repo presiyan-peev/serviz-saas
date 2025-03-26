@@ -11,6 +11,7 @@ declare module 'vue' {
     AskForPasswordResetForm: typeof import('./components/login/AskForPasswordResetForm.vue')['default']
     BaseButton: typeof import('./components/buttons/BaseButton.vue')['default']
     BaseInput: typeof import('./components/text-inputs/BaseInput.vue')['default']
+    ChangePasswordForm: typeof import('./components/login/ChangePasswordForm.vue')['default']
     ErrorBoundary: typeof import('./components/ErrorBoundary.vue')['default']
     ForgottenPasswordForm: typeof import('./components/login/ForgottenPasswordForm.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']

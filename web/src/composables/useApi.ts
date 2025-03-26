@@ -14,16 +14,16 @@ const AxiosInstance = axios.create({
 export function useApi() {
   const { logApiRequestError, logApiResponseError } = useErrorHandler();
 
-  const handleApiError = (error: any, url: string) => {
+  const handleApiError = (error: any, url: string, errorMessage: string) => {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      logApiResponseError(error.response, url);
+      logApiResponseError(error.response, url, errorMessage);
     } else if (error.request) {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      logApiRequestError(error.request, url);
+      logApiRequestError(error.request, url, errorMessage);
     } else {
       // Something happened in setting up the request that triggered an Error
       console.log("Error", error.message);
@@ -31,39 +31,57 @@ export function useApi() {
     console.log(error.config);
   };
 
-  const getApi = async (url: string, params?: QueryParams) => {
+  const getApi = async (
+    url: string,
+    errorMessage: string,
+    params?: QueryParams
+  ) => {
     try {
       const response = await AxiosInstance.get(url, { params });
       return response;
     } catch (error) {
-      handleApiError(error, url);
+      handleApiError(error, url, errorMessage);
     }
   };
 
-  const postApi = async (url: string, body: object, params?: QueryParams) => {
+  const postApi = async (
+    url: string,
+    errorMessage: string,
+    body: object,
+    params?: QueryParams
+  ) => {
     try {
       const response = await AxiosInstance.post(url, body, { params });
       return response;
     } catch (error) {
-      handleApiError(error, url);
+      handleApiError(error, url, errorMessage);
     }
   };
 
-  const patchApi = async (url: string, body: object, params?: QueryParams) => {
+  const patchApi = async (
+    url: string,
+    errorMessage: string,
+    body: object,
+    params?: QueryParams
+  ) => {
     try {
       const response = await AxiosInstance.patch(url, body, { params });
       return response;
     } catch (error) {
-      handleApiError(error, url);
+      handleApiError(error, url, errorMessage);
     }
   };
 
-  const deleteApi = async (url: string, params: QueryParams) => {
+  const deleteApi = async (
+    url: string,
+    errorMessage: string,
+    params: QueryParams
+  ) => {
     try {
       const response = await AxiosInstance.delete(url, { params });
       return response;
     } catch (error) {
-      handleApiError(error, url);
+      handleApiError(error, url, errorMessage);
     }
   };
 

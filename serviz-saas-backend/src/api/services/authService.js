@@ -25,19 +25,28 @@ exports.signup = async (username, email, password, tenantName) => {
     return generateToken(user.id, tenant.id);
   } catch (error) {
     if (transaction) await transaction.rollback();
-    throw error;
+    throw new Error("Signup failed", {
+      cause: 400,
+      internalCode: "Ex10011",
+    });
   }
 };
 
 exports.login = async (email, password) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    throw new Error("Login failed: User not found", { cause: 404 });
+    throw new Error("Login failed: User not found", {
+      cause: 404,
+      internalCode: "Ex10021",
+    });
   }
 
   const isPasswordValid = await user.verifyPassword(password);
   if (!isPasswordValid) {
-    throw new Error("Login failed: Invalid password", { cause: 401 });
+    throw new Error("Login failed: Invalid password", {
+      cause: 401,
+      internalCode: "Ex10022",
+    });
   }
 
   return generateToken(user.id, user.tenantId);
@@ -46,13 +55,17 @@ exports.login = async (email, password) => {
 exports.changePassword = async (userId, oldPassword, newPassword) => {
   const user = await User.findByPk(userId);
   if (!user) {
-    throw new Error("Change password failed: User not found", { cause: 404 });
+    throw new Error("Change password failed: User not found", {
+      cause: 404,
+      internalCode: "Ex10031",
+    });
   }
 
   const isPasswordValid = await user.verifyPassword(oldPassword);
   if (!isPasswordValid) {
     throw new Error("Change password failed: Invalid old password", {
       cause: 401,
+      internalCode: "Ex10032",
     });
   }
 
@@ -63,7 +76,10 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
 exports.forgotPassword = async (email) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    throw new Error("Forgot password failed: User not found", { cause: 404 });
+    throw new Error("Forgot password failed: User not found", {
+      cause: 404,
+      internalCode: "Ex10041",
+    });
   }
 
   // Generate a password reset token (you may want to use a library for this)
@@ -89,6 +105,7 @@ exports.resetPassword = async (resetToken, newPassword) => {
   if (!user) {
     throw new Error("Reset password failed: Invalid or expired reset token", {
       cause: 400,
+      internalCode: "Ex10051",
     });
   }
 

@@ -12,13 +12,13 @@ export function useAuth() {
     email,
     password
   ) => {
-    return await postApi("/auth/login", { email, password });
+    return await postApi("/auth/login", "Failed to login", { email, password });
   };
 
   const requestPasswordResetToken: (
     email: string
   ) => Promise<AxiosResponse<any, any> | undefined> = async (email) => {
-    return await postApi("/auth/forgot-password", { email });
+    return await postApi("/auth/forgot-password", "Failed to ", { email });
   };
 
   const resetPassword: (
@@ -28,7 +28,10 @@ export function useAuth() {
     password,
     resetToken
   ) => {
-    return await postApi("/auth/reset-password", { password, resetToken });
+    return await postApi("/auth/reset-password", "Failed to reset password", {
+      password,
+      resetToken,
+    });
   };
 
   return {
