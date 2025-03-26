@@ -2,6 +2,7 @@ const { User, Tenant } = require("../../models"); // Import models from index.js
 const { generateToken } = require("../../utils/jwtUtils");
 const { sequelize } = require("../../models"); // Import sequelize instance
 const { Op } = require("sequelize");
+const { ApiError } = require("../../utils/ApiError");
 
 exports.signup = async (username, email, password, tenantName) => {
   let transaction;
@@ -25,7 +26,7 @@ exports.signup = async (username, email, password, tenantName) => {
     return generateToken(user.id, tenant.id);
   } catch (error) {
     if (transaction) await transaction.rollback();
-    throw new Error("Signup failed", {
+    throw new ApiError("Signup failed", {
       cause: 400,
       internalCode: "Ex10011",
     });
@@ -35,7 +36,7 @@ exports.signup = async (username, email, password, tenantName) => {
 exports.login = async (email, password) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    throw new Error("Login failed: User not found", {
+    throw new ApiError("Login failed: User not found", {
       cause: 404,
       internalCode: "Ex10021",
     });
@@ -43,7 +44,7 @@ exports.login = async (email, password) => {
 
   const isPasswordValid = await user.verifyPassword(password);
   if (!isPasswordValid) {
-    throw new Error("Login failed: Invalid password", {
+    throw new ApiError("Login failed: Invalid password", {
       cause: 401,
       internalCode: "Ex10022",
     });
@@ -55,7 +56,7 @@ exports.login = async (email, password) => {
 exports.changePassword = async (userId, oldPassword, newPassword) => {
   const user = await User.findByPk(userId);
   if (!user) {
-    throw new Error("Change password failed: User not found", {
+    throw new ApiError("Change password failed: User not found", {
       cause: 404,
       internalCode: "Ex10031",
     });
@@ -63,7 +64,7 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
 
   const isPasswordValid = await user.verifyPassword(oldPassword);
   if (!isPasswordValid) {
-    throw new Error("Change password failed: Invalid old password", {
+    throw new ApiError("Change password failed: Invalid old password", {
       cause: 401,
       internalCode: "Ex10032",
     });
@@ -76,7 +77,10 @@ exports.changePassword = async (userId, oldPassword, newPassword) => {
 exports.forgotPassword = async (email) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
-    throw new Error("Forgot password failed: User not found", {
+    console.log("ApiError");
+    console.log(ApiError);
+    console.log(ApiError.toString());
+    throw new ApiError("Forgot password failed: User not found", {
       cause: 404,
       internalCode: "Ex10041",
     });
@@ -103,10 +107,13 @@ exports.resetPassword = async (resetToken, newPassword) => {
   });
 
   if (!user) {
-    throw new Error("Reset password failed: Invalid or expired reset token", {
-      cause: 400,
-      internalCode: "Ex10051",
-    });
+    throw new ApiError(
+      "Reset password failed: Invalid or expired reset token",
+      {
+        cause: 400,
+        internalCode: "Ex10051",
+      }
+    );
   }
 
   user.password = newPassword;

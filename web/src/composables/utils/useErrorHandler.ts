@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useNotify } from "../useSnackbar";
+import { apiErrorMessages } from "./apiErrorMessages";
 
 const { notifyError } = useNotify();
 // err: unknown, instance: ComponentPublicInstance | null, info: string
@@ -32,7 +33,10 @@ export function useErrorHandler() {
     console.error(errorMessage, url);
     console.info(response.data);
     console.info(response.status);
-    notifyError({ title: response.data.internalCode });
+    notifyError({
+      title:
+        apiErrorMessages[response.data.internalCode] || "Error receiving data",
+    });
   };
 
   const logApiRequestError = (

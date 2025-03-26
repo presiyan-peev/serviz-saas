@@ -51,6 +51,7 @@ app.use((req, res, next) => {
 // Basic error handling
 app.use((err, req, res, next) => {
   console.log("Error Stack");
+  console.error(err.toString());
   console.error(err.stack);
   if (err.cause) {
     return res.status(err.cause).json({
