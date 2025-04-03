@@ -1,6 +1,7 @@
 # Serviz SaaS Platform
 
-This repository contains the complete Serviz SaaS platform, including the backend server, Vue.js frontend, and database components. This project was created for me to play around with Cursor AI.
+This project was created for me to play around with Cursor AI.
+It resembles an ERP system for car shops, that will allow users to store information about their customers and cars.
 
 ## Prerequisites
 
