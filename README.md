@@ -65,7 +65,7 @@ npm start
 
 ### 3. Frontend Application (Vue.js)
 
-The main frontend application is built with Vue.js. To run the development server:
+The Vue.js frontend application is currently under active development and is not yet ready for production use. For API testing purposes, we recommend utilizing Postman. Comprehensive API documentation can be found in the `swagger-complete-erp-api.yml` file.
 
 ```bash
 # Navigate to the Vue.js project directory
